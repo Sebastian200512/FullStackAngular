@@ -1,5 +1,10 @@
 package co.pei.sebastianpatino.reservation_backend.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import co.pei.sebastianpatino.reservation_backend.dto.CreateReservationRequest;
 import co.pei.sebastianpatino.reservation_backend.dto.ReservationResponse;
 import co.pei.sebastianpatino.reservation_backend.entity.ReservationEntity;
@@ -8,8 +13,6 @@ import co.pei.sebastianpatino.reservation_backend.exception.ReservationAlreadyCa
 import co.pei.sebastianpatino.reservation_backend.exception.ReservationConflictException;
 import co.pei.sebastianpatino.reservation_backend.exception.ReservationNotFoundException;
 import co.pei.sebastianpatino.reservation_backend.repository.ReservationRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Application service for reservation business operations.
@@ -88,5 +91,11 @@ public class ReservationService {
                 entity.getService(),
                 entity.getStatus()
         );
+    }
+
+    public List<ReservationResponse> getAllReservations() {
+        return reservationRepository.findAll().stream()
+                .map(this::toResponse)
+                .toList();
     }
 }
